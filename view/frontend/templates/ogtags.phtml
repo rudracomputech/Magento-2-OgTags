@@ -1,0 +1,10 @@
+<?php
+$ogTitle = $block->getOgTitle();
+$ogImage = $block->getOgImage();
+?>
+<?php if ($ogTitle): ?>
+    <meta property="og:title" content="<?= $block->escapeHtml($ogTitle) ?>" />
+<?php endif; ?>
+<?php if ($ogImage): ?>
+    <meta property="og:image" content="<?= $block->escapeHtml($block->getViewFileUrl($ogImage)) ?>" />
+<?php endif; ?>
