@@ -27,11 +27,13 @@ class OgTags extends Template
     public function getOgTitle()
     {
         if ($product = $this->registry->registry('current_product')) {
-            return $product->getName();
+            return $product->getData('og_title');
         } elseif ($category = $this->registry->registry('current_category')) {
-            return $category->getName();
+            return $category->getData('og_title');
         } elseif ($cmsPage = $this->getCmsPage()) {
-            return $cmsPage->getTitle();
+            return $cmsPage->getData('og_title');
+        } elseif ($this->_request->getFullActionName() == 'cms_index_index') {
+            return $this->helper->getConfigValue('ogtags/homepage/og_title_home');
         }
         return $this->helper->getConfigValue('ogtags/general/og_title');
     }
@@ -39,22 +41,15 @@ class OgTags extends Template
     public function getOgImage()
     {
         if ($product = $this->registry->registry('current_product')) {
-            return $this->getProductImageUrl($product);
+            return $product->getData('og_image');
         } elseif ($category = $this->registry->registry('current_category')) {
-            return $this->getCategoryImageUrl($category);
+            return $category->getData('og_image');
+        } elseif ($cmsPage = $this->getCmsPage()) {
+            return $cmsPage->getData('og_image');
+        } elseif ($this->_request->getFullActionName() == 'cms_index_index') {
+            return $this->helper->getConfigValue('ogtags/homepage/og_image_home');
         }
         return $this->helper->getConfigValue('ogtags/general/og_image');
-    }
-
-    private function getProductImageUrl(Product $product)
-    {
-        $imageHelper = $this->_layout->createBlock('Magento\Catalog\Helper\Image');
-        return $imageHelper->init($product, 'product_page_image_medium')->getUrl();
-    }
-
-    private function getCategoryImageUrl(Category $category)
-    {
-        return $category->getImageUrl();
     }
 
     private function getCmsPage()
