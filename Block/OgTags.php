@@ -27,11 +27,30 @@ class OgTags extends Template
     public function getOgTitle()
     {
         if ($product = $this->registry->registry('current_product')) {
-            return $product->getData('og_title');
+           $og_title =  $product->getData('og_title');
+           
+           if(empty($og_title)){
+                $og_title =  $product->getMetaTitle();
+           }
+            return $og_title;
         } elseif ($category = $this->registry->registry('current_category')) {
-            return $category->getData('og_title');
+            
+             $og_title =  $category->getData('og_title');
+           
+           if(empty($og_title)){
+                $og_title =  $category->getMetaTitle();
+           }
+            return $og_title;
+            
         } elseif ($cmsPage = $this->getCmsPage()) {
-            return $cmsPage->getData('og_title');
+            
+             $og_title =  $cmsPage->getData('og_title');
+           
+           if(empty($og_title)){
+                $og_title =  $cmsPage->getMetaTitle();
+           }
+            return $og_title;
+            
         } elseif ($this->_request->getFullActionName() == 'cms_index_index') {
             return $this->helper->getConfigValue('ogtags/homepage/og_title_home');
         }
@@ -41,9 +60,19 @@ class OgTags extends Template
     public function getOgImage()
     {
         if ($product = $this->registry->registry('current_product')) {
-            return $product->getData('og_image');
+             $og_image =  $product->getData('og_image');
+              if(empty($og_title)){
+                $og_image =  $product->getImageUrl();
+           }
+            return $og_image;
         } elseif ($category = $this->registry->registry('current_category')) {
-            return $category->getData('og_image');
+            
+                $og_image =  $category->getData('og_image');
+              if(empty($og_title)){
+                $og_image =  $category->getImageUrl();
+           }
+            return $og_image;
+            
         } elseif ($cmsPage = $this->getCmsPage()) {
             return $cmsPage->getData('og_image');
         } elseif ($this->_request->getFullActionName() == 'cms_index_index') {
